@@ -1,33 +1,42 @@
 package com.nibado.project.grub.repository;
 
 import com.nibado.project.grub.repository.domain.User;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Slf4j
 public class UserRepository {
-    private final List<User> users = new ArrayList<>();
+    private static final RowMapper<User> USER_ROW_MAPPER = (rs, rowNum) -> new User(rs.getString("email"), rs.getString("name"), rs.getString("password"));
+    private final JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public UserRepository(final JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     public Optional<User> findByEmail(final String email) {
-        return users.stream().filter(u -> u.getEmail().equals(email)).findAny();
+        return jdbcTemplate
+                .query("SELECT email, name, password FROM users WHERE email = ?", USER_ROW_MAPPER, email)
+                .stream()
+                .findAny();
     }
 
     public void createUser(final String email, final String name, final String password) {
-        users.add(new User(email, name, password));
+        jdbcTemplate.update("INSERT INTO users (email, name, password) VALUES(?,?,?)", email, name, password);
+    }
+
+    public void deleteUser(final String email) {
+        jdbcTemplate.update("DELETE FROM users WHERE email = ?", email);
     }
 
     public List<User> findAll() {
-        return Collections.unmodifiableList(users);
-    }
-
-    @PostConstruct
-    public void init() {
-        createUser("ndommerholt@gmail.com", "Niels", "foo");
-        createUser("efkranveld@gmail.com", "Fleur", "bar");
+        return jdbcTemplate.query("SELECT email, name, password FROM users", USER_ROW_MAPPER);
     }
 }

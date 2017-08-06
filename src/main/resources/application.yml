@@ -2,5 +2,10 @@ server:
   port: 8080
   tomcat:
     max-threads: 2
+spring:
+  datasource:
+    url: jdbc:h2:~/jooq
+    username: sa
+    password:
 
 
