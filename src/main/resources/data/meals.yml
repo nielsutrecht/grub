@@ -1,0 +1,25 @@
+meals:
+- name: Cappuccino
+  ingredients:
+    - name: Halfvolle Melk
+    - name: Espresso
+
+- name: Roggebrood Kaas
+  ingredients:
+    - name: Roggebrood
+      portion: plak
+    - name: Jong Belegen Kaas
+      portion: halve plak
+
+- name: Boterhammen Kipfilet Hoemoes
+  ingredients:
+    - name: Tarwebrood
+      portion: snee
+      amount: 2
+    - name: Gerookte Kipfilet
+      portion: plak
+      amount: 3
+    - name: Hoemoes
+      portion: lepel
+      amount: 2
+

@@ -1,0 +1,38 @@
+ingredients:
+  - name: Espresso
+    kcal: 0
+
+  - name: Halfvolle Melk
+    kcal: 50
+
+  - name: Roggebrood
+    kcal: 200
+    portion:
+      - name: plak
+        frac: 0.28
+
+  - name: Jong Belegen Kaas
+    kcal: 375
+    portion:
+      - name: plak
+        frac: 0.2
+      - name: halve plak
+        frac: 0.1
+
+  - name: Tarwebrood
+    kcal: 266
+    portion:
+      - name: snee
+        frac: 0.3
+
+  - name: Hoemoes
+    kcal: 312
+    portion:
+      - name: lepel
+        frac: 0.16
+
+  - name: Gerookte Kipfilet
+    kcal: 110
+    portion:
+      - name: plak
+        frac: 0.15
