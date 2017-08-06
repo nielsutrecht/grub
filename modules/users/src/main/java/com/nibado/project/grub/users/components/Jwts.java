@@ -1,20 +1,20 @@
-package com.nibado.project.grub.users.service;
+package com.nibado.project.grub.users.components;
 
 import com.nibado.project.grub.users.repository.domain.User;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-@Service
+@Component
 @Slf4j
-public class JwtsService {
+public class Jwts {
     private static final User UNAUTHORIZED_USER = new User(null, null, null);
 
+    //TODO: Create at startup
     private String key = "supersecret";
 
     public User getUser(String header) {
@@ -25,7 +25,7 @@ public class JwtsService {
         final String token = header.substring(7); // The part after "Bearer "
         final Claims claims;
         try {
-            claims = Jwts.parser().setSigningKey(key)
+            claims = io.jsonwebtoken.Jwts.parser().setSigningKey(key)
                     .parseClaimsJws(token).getBody();
 
         } catch (final SignatureException e) {
@@ -39,7 +39,7 @@ public class JwtsService {
     }
 
     public String createToken(User user) {
-        return Jwts.builder().setSubject(user.getEmail())
+        return io.jsonwebtoken.Jwts.builder().setSubject(user.getEmail())
                 .claim("name", user.getName())
                 .setIssuedAt(new Date())
                 .signWith(SignatureAlgorithm.HS256, key).compact();

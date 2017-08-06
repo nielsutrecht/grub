@@ -22,6 +22,11 @@
             <artifactId>testsupport</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.nibado.project</groupId>
+            <artifactId>validation</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>
