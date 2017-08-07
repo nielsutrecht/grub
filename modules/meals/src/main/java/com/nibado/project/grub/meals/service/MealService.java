@@ -38,19 +38,19 @@ public class MealService {
     private static Ingredient map(Importer.Ingredient ingredient) {
         Map<String, Portion> portions = new HashMap<>();
 
-        portions.put("unit", new Portion("100g", 1.0));
-        portions.put("gram", new Portion("gram", 0.01));
+        portions.put("unit", new Portion(null, "100g", 1.0));
+        portions.put("gram", new Portion(null, "gram", 0.01));
 
         if (ingredient.getPortion() != null) {
             ingredient.getPortion()
                     .forEach(p -> portions.put(p.getName(), map(p)));
         }
 
-        return new Ingredient(ingredient.getName(), ingredient.getKcal(), portions);
+        return new Ingredient(null, ingredient.getName(), ingredient.getKcal(), portions);
     }
 
     private static Portion map(Importer.IngredientPortion portion) {
-        return new Portion(portion.getName(), portion.getFrac());
+        return new Portion(null, portion.getName(), portion.getFrac());
     }
 
     private Meal map(Importer.Meal meal) {
