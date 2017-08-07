@@ -8,18 +8,12 @@ import java.util.stream.Collectors;
 
 @Value
 public class UserListResponse {
-    private final List<UserListEntry> users;
+    private final List<UserDTO> users;
 
     public static UserListResponse of(final List<User> users) {
         return new UserListResponse(users
                 .stream()
-                .map(u -> new UserListEntry(u.getName(), u.getEmail()))
+                .map(UserDTO::of)
                 .collect(Collectors.toList()));
-    }
-
-    @Value
-    public static class UserListEntry {
-        private final String name;
-        private final String email;
     }
 }

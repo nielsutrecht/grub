@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -42,6 +43,18 @@ public class UserService {
         repository.createUser(email, name, hash);
 
         log.info("Created user {}: {}", email, name);
+    }
+
+    public void updatePassword(final String email, final String password) {
+        String hash = Hash.create(password);
+
+        repository.updatePassword(email, hash);
+
+        log.info("Updated password for user {}", email);
+    }
+
+    public Optional<User> get(final String email) {
+        return repository.findByEmail(email);
     }
 
     public List<User> getAll() {

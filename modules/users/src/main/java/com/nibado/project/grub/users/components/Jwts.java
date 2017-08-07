@@ -12,14 +12,14 @@ import java.util.Date;
 @Component
 @Slf4j
 public class Jwts {
-    private static final User UNAUTHORIZED_USER = new User(null, null, null);
+    private static final User UNAUTHORIZED_USER = new User(null, null, null, false);
 
     //TODO: Create at startup
     private String key = "supersecret";
 
     public User getUser(String header) {
         if (header == null || !header.startsWith("Bearer ")) {
-            return null;
+            return UNAUTHORIZED_USER;
         }
 
         final String token = header.substring(7); // The part after "Bearer "
@@ -33,14 +33,15 @@ public class Jwts {
             return UNAUTHORIZED_USER;
         }
 
-        log.debug("User {}: {}", claims.getSubject(), claims.get("name"));
+        log.debug("User {}: {}, admin={}", claims.getSubject(), claims.get("name"), claims.get("admin"));
 
-        return new User(claims.getSubject(), (String) claims.get("name"), null);
+        return new User(claims.getSubject(), (String) claims.get("name"), null, (Boolean) claims.get("admin"));
     }
 
     public String createToken(User user) {
         return io.jsonwebtoken.Jwts.builder().setSubject(user.getEmail())
                 .claim("name", user.getName())
+                .claim("admin", user.isAdmin())
                 .setIssuedAt(new Date())
                 .signWith(SignatureAlgorithm.HS256, key).compact();
     }

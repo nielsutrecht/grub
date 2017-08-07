@@ -1,6 +1,5 @@
 package com.nibado.project.grub.users.components;
 
-import com.nibado.project.grub.users.repository.domain.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,11 +21,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        User user = jwts.getUser(request.getHeader(AUTH_HEADER));
-
-        if (user.isAuthorized()) {
-            request.setAttribute("user", user);
-        }
+        request.setAttribute("user", jwts.getUser(request.getHeader(AUTH_HEADER)));
 
         return true;
     }

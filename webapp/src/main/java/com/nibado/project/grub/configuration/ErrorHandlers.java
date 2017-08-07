@@ -1,5 +1,6 @@
 package com.nibado.project.grub.configuration;
 
+import com.nibado.project.grub.aspect.AccessException;
 import com.nibado.project.grub.users.service.exception.AuthenticationException;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -20,13 +21,21 @@ public class ErrorHandlers {
         return new ErrorResponse("UNAUTHORIZED", e.getMessage() );
     }
 
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler({AccessException.class})
+    @ResponseBody
+    public ErrorResponse handle(AccessException e) {
+        log.error("AccessException: {}", e.getMessage(), e);
+        return new ErrorResponse("NO_ACCESS", e.getMessage() );
+    }
+
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({Throwable.class})
     @ResponseBody
     public ErrorResponse handleThrowableSafetyNet(Throwable ex) {
         log.error("Unknown error: {}", ex.getMessage(), ex);
-        return new ErrorResponse("UNKNOWN", "An unknown error occured");
+        return new ErrorResponse("UNKNOWN", "An unknown error occurred");
     }
 
     @Value
