@@ -37,10 +37,10 @@ public class UserService {
         return jwts.createToken(user);
     }
 
-    public void createUser(final String email, final String name, final String password) {
+    public void createUser(final String email, final String name, final String password, final boolean admin) {
         String hash = Hash.create(password);
 
-        repository.createUser(email, name, hash);
+        repository.createUser(email, name, hash, admin);
 
         log.info("Created user {}: {}", email, name);
     }
@@ -63,8 +63,10 @@ public class UserService {
 
     @PostConstruct
     public void init() {
-        createUser("ndommerholt@gmail.com", "Niels", "foo");
-        createUser("efkraneveld@hotmail.com", "Fleur", "bar");
+        if (repository.count() == 0) {
+            createUser("admin@example.com", "Admin", "foo", true);
+            createUser("user@example.com", "User", "bar", false);
+        }
 
         repository.findAll().forEach(u -> log.info("{}", u));
     }

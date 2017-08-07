@@ -1,4 +1,8 @@
 CREATE TABLE IF NOT EXISTS users(
-    email VARCHAR(255) PRIMARY KEY,
-    name VARCHAR(255),
-    password VARCHAR(255));
+    id UUID PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    admin BOOLEAN NOT NULL);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idxUsersEmail ON users(email);

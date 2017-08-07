@@ -8,11 +8,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Component
 @Slf4j
 public class Jwts {
-    private static final User UNAUTHORIZED_USER = new User(null, null, null, false);
+    private static final User UNAUTHORIZED_USER = new User(null, null, null, null, false);
 
     //TODO: Create at startup
     private String key = "supersecret";
@@ -33,13 +34,17 @@ public class Jwts {
             return UNAUTHORIZED_USER;
         }
 
-        log.debug("User {}: {}, admin={}", claims.getSubject(), claims.get("name"), claims.get("admin"));
+        User user = new User(UUID.fromString(claims.getId()), claims.getSubject(), (String) claims.get("name"), null, (Boolean) claims.get("admin"));
 
-        return new User(claims.getSubject(), (String) claims.get("name"), null, (Boolean) claims.get("admin"));
+        log.debug("User {}: {}, {} {}", user.getId(), user.getEmail(), user.getName(), user.isAdmin() ? "(admin)" : "");
+
+        return user;
     }
 
     public String createToken(User user) {
-        return io.jsonwebtoken.Jwts.builder().setSubject(user.getEmail())
+        return io.jsonwebtoken.Jwts.builder()
+                .setId(user.getId().toString())
+                .setSubject(user.getEmail())
                 .claim("name", user.getName())
                 .claim("admin", user.isAdmin())
                 .setIssuedAt(new Date())

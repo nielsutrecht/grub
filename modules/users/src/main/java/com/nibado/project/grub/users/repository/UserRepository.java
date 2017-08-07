@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 
 @Repository
@@ -16,10 +17,11 @@ import java.util.Optional;
 public class UserRepository {
     private static final RowMapper<User> USER_ROW_MAPPER = (rs, rowNum) ->
             new User(
+                    UUID.fromString(rs.getString("id")),
                     rs.getString("email"),
                     rs.getString("name"),
                     rs.getString("password"),
-                    true);
+                    rs.getBoolean("admin"));
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -29,13 +31,19 @@ public class UserRepository {
 
     public Optional<User> findByEmail(final String email) {
         return jdbcTemplate
-                .query("SELECT email, name, password FROM users WHERE email = ?", USER_ROW_MAPPER, email)
+                .query("SELECT id, email, name, password, admin FROM users WHERE email = ?", USER_ROW_MAPPER, email)
                 .stream()
                 .findAny();
     }
 
-    public void createUser(final String email, final String name, final String password) {
-        jdbcTemplate.update("INSERT INTO users (email, name, password) VALUES(?,?,?)", email, name, password);
+    public void createUser(final String email, final String name, final String password, final boolean admin) {
+        jdbcTemplate.update(
+                "INSERT INTO users (id, email, name, password, admin) VALUES(?,?,?,?,?)",
+                UUID.randomUUID(),
+                email,
+                name,
+                password,
+                admin);
     }
 
     public void updatePassword(final String email, final String password) {
@@ -46,7 +54,11 @@ public class UserRepository {
         jdbcTemplate.update("DELETE FROM users WHERE email = ?", email);
     }
 
+    public int count() {
+        return jdbcTemplate.queryForObject("SELECT count(id) FROM users", Integer.class);
+    }
+
     public List<User> findAll() {
-        return jdbcTemplate.query("SELECT email, name, password FROM users", USER_ROW_MAPPER);
+        return jdbcTemplate.query("SELECT id, email, name, password, admin FROM users", USER_ROW_MAPPER);
     }
 }
