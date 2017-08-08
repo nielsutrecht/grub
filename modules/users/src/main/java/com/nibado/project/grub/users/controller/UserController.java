@@ -67,4 +67,19 @@ public class UserController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    @Access(AccessLevel.ADMIN)
+    public ResponseEntity<Void> create(@RequestAttribute("user") final User user, @RequestBody final CreateUserDTO createUser) {
+        log.info(
+                "User {} creating new user {} {} (admin={})",
+                user.getEmail(),
+                createUser.getName(),
+                createUser.getEmail(),
+                createUser.isAdmin());
+
+        service.createUser(createUser.getEmail(), createUser.getName(), createUser.getPassword(), createUser.isAdmin());
+
+        return ResponseEntity.noContent().build();
+    }
 }

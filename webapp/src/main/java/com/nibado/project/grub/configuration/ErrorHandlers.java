@@ -2,6 +2,7 @@ package com.nibado.project.grub.configuration;
 
 import com.nibado.project.grub.aspect.AccessException;
 import com.nibado.project.grub.users.service.exception.AuthenticationException;
+import com.nibado.project.grub.users.service.exception.UserAlreadyExistsException;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,21 @@ public class ErrorHandlers {
         return new ErrorResponse("NO_ACCESS", e.getMessage() );
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({IllegalArgumentException.class})
+    @ResponseBody
+    public ErrorResponse handle(IllegalArgumentException e) {
+        log.error("IllegalArgumentException: {}", e.getMessage(), e);
+        return new ErrorResponse("ILLEGAL_ARGUMENT", e.getMessage() );
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({UserAlreadyExistsException.class})
+    @ResponseBody
+    public ErrorResponse handle(UserAlreadyExistsException e) {
+        log.error("UserAlreadyExistsException: {}", e.getMessage(), e);
+        return new ErrorResponse("ALREADY_EXISTS", e.getMessage() );
+    }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({Throwable.class})

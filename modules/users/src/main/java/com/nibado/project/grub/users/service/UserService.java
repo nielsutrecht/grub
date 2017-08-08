@@ -5,8 +5,10 @@ import com.nibado.project.grub.users.components.Jwts;
 import com.nibado.project.grub.users.repository.UserRepository;
 import com.nibado.project.grub.users.repository.domain.User;
 import com.nibado.project.grub.users.service.exception.AuthenticationException;
+import com.nibado.project.grub.users.service.exception.UserAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -40,7 +42,11 @@ public class UserService {
     public void createUser(final String email, final String name, final String password, final boolean admin) {
         String hash = Hash.create(password);
 
-        repository.createUser(email, name, hash, admin);
+        try {
+            repository.createUser(email, name, hash, admin);
+        } catch (DuplicateKeyException e) {
+            throw new UserAlreadyExistsException(String.format("User %s already exists", email));
+        }
 
         log.info("Created user {}: {}", email, name);
     }
