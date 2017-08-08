@@ -3,6 +3,7 @@ package com.nibado.project.grub.configuration;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.nibado.project.grub.backup.BackupScheduler;
 import com.nibado.project.grub.users.components.AuthInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +23,9 @@ import java.time.format.DateTimeFormatter;
 public class ApplicationConfiguration extends WebMvcConfigurerAdapter {
     @Autowired
     private AuthInterceptor authInterceptor;
+
+    @Autowired
+    private BackupScheduler backupScheduler;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
