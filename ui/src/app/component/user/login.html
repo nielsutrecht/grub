@@ -1,0 +1,13 @@
+<h1>User login</h1>
+<div>
+  <label>email: </label>
+  <input [(ngModel)]="email" type="email" placeholder="email"/>
+</div>
+<div>
+  <label>password: </label>
+  <input [(ngModel)]="password" type="password" placeholder=""/>
+</div>
+<button (click)="login()">Login</button>
+<button (click)="get()">Get</button>
+{{response ? response.token : ''}}<br/>
+{{response ? response.expires: ''}}
