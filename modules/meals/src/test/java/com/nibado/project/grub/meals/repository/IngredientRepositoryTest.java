@@ -2,6 +2,7 @@ package com.nibado.project.grub.meals.repository;
 
 import com.nibado.project.grub.meals.service.domain.Ingredient;
 import com.nibado.project.grub.repository.RepositoryTest;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,6 +20,11 @@ public class IngredientRepositoryTest extends RepositoryTest<Ingredient> {
     public void setup() {
         super.setup();
         repository = new IngredientRepository(template);
+    }
+
+    @After
+    public void teardown() {
+        super.teardown();
     }
 
     @Test

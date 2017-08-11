@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
+import static com.nibado.project.grub.validation.Values.notNull;
+
 @RestController
 @RequestMapping("/user")
 @Slf4j
@@ -23,7 +25,9 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @Access(AccessLevel.ANONYMOUS)
     public LoginResponse login(@RequestBody LoginRequest login) {
-        String token = service.login(login.getEmail(), login.getPassword());
+        String token = service.login(
+                notNull(login.getEmail(), "email"),
+                notNull(login.getPassword(), "password"));
         return new LoginResponse(token, ZonedDateTime.now().plusDays(7));
     }
 
@@ -41,7 +45,6 @@ public class UserController {
     @RequestMapping(value = "/{email:.+}", method = RequestMethod.GET)
     @Access(AccessLevel.ADMIN)
     public ResponseEntity<UserDTO> get(@PathVariable("email") final String email) {
-
         Optional<User> user = service.get(email);
 
         if(!user.isPresent()) {

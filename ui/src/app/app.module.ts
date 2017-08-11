@@ -8,15 +8,18 @@ import { AppRoutingModule }     from './app-routing';
 
 //Services
 import { UserService } from './component/user/user.service';
+import { DiaryService } from './component/diary/diary.service';
 
 //Components
 import { RootComponent } from './component/root/root';
 import { UserLoginComponent } from './component/user/login';
+import { DiaryDayComponent } from './component/diary/day';
 
 @NgModule({
   declarations: [
     RootComponent,
-    UserLoginComponent
+    UserLoginComponent,
+    DiaryDayComponent
   ],
   imports: [
     BrowserModule,
@@ -26,6 +29,7 @@ import { UserLoginComponent } from './component/user/login';
   ],
   providers: [
     UserService,
+    DiaryService
   ],
   bootstrap: [RootComponent]
 })

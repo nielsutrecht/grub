@@ -28,7 +28,7 @@ public class UserService {
     }
 
     public String login(final String email, final String password) {
-        User user = repository.findByEmail(email).orElseThrow(() -> new AuthenticationException("User not found"));
+        User user = repository.findByEmail(email).orElseThrow(() -> new AuthenticationException(String.format("User %s not found", email)));
 
         if (!Hash.validate(password, user.getPassword())) {
             throw new AuthenticationException("Invalid password");

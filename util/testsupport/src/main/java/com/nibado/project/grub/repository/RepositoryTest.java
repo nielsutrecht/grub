@@ -1,6 +1,5 @@
 package com.nibado.project.grub.repository;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -28,7 +27,6 @@ public abstract class RepositoryTest<T> {
     @Rule
     public ExpectedException expected = ExpectedException.none();
 
-    @Before
     public void setup() {
         database = new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
@@ -40,6 +38,10 @@ public abstract class RepositoryTest<T> {
         JdbcTestUtils.deleteFromTables(template, table);
 
         assertEmpty();
+    }
+
+    public void teardown() {
+        JdbcTestUtils.deleteFromTables(template, table);
     }
 
     protected void assertRows(int amount) {

@@ -2,10 +2,12 @@ package com.nibado.project.cli;
 
 import com.nibado.project.cli.dto.UserDTO;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Ignore
 public class ClientTest {
     private Client client;
 

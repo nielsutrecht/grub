@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.springframework.test.jdbc.JdbcTestUtils.deleteFromTables;
 
 public class UserMealRepositoryTest extends RepositoryTest<UserMeal> {
     private static final UUID USER_0 = new UUID(0, 0);
@@ -31,6 +32,10 @@ public class UserMealRepositoryTest extends RepositoryTest<UserMeal> {
     @Before
     public void setup() {
         super.setup();
+
+        deleteFromTables(template, "users");
+        deleteFromTables(template, "meals");
+
         template.update("INSERT INTO users(id) VALUES(?)", USER_0);
         template.update("INSERT INTO users(id) VALUES(?)", USER_1);
         template.update("INSERT INTO meals(id) VALUES(?)", MEAL_ID);

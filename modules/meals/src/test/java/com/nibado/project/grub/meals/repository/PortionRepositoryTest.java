@@ -3,8 +3,10 @@ package com.nibado.project.grub.meals.repository;
 import com.nibado.project.grub.meals.service.domain.Ingredient;
 import com.nibado.project.grub.meals.service.domain.Portion;
 import com.nibado.project.grub.repository.RepositoryTest;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.test.jdbc.JdbcTestUtils;
 
 import java.util.List;
 
@@ -26,8 +28,15 @@ public class PortionRepositoryTest extends RepositoryTest<Ingredient> {
         repository = new PortionRepository(template);
         ingredientRepository = new IngredientRepository(template);
 
+        JdbcTestUtils.deleteFromTables(template, "ingredients");
+
         ingredientA = ingredientRepository.create("A", 100);
         ingredientB = ingredientRepository.create("B", 200);
+    }
+
+    @After
+    public void teardown() {
+        super.teardown();
     }
 
     @Test

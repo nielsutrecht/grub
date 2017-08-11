@@ -15,9 +15,11 @@ export class UserLoginComponent {
   ) {}
 
   login(): void {
+    console.info(`email: ${this.email}, password: ${this.password}`);
     this.userService.login(this.email, this.password)
       .then(response => {
         this.response = response;
+        this.get();
       });
   }
 
