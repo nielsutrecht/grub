@@ -1,14 +1,14 @@
-CREATE TABLE IF NOT EXISTS ingredients (
-    id UUID PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    kiloCalories INT NOT NULL);
+CREATE TABLE IF NOT EXISTS meals (id UUID PRIMARY KEY);
+CREATE TABLE IF NOT EXISTS users(id UUID PRIMARY KEY);
 
-CREATE UNIQUE INDEX IF NOT EXISTS idxIngredientName ON ingredients(name);
-
-CREATE TABLE IF NOT EXISTS portions (
-    ingredient_id UUID,
-    name VARCHAR(255) NOT NULL,
-    fraction DOUBLE NOT NULL,
-    PRIMARY KEY (ingredient_id, name),
-    FOREIGN KEY (ingredient_id) references ingredients(id));
+CREATE TABLE IF NOT EXISTS user_meals (
+    user_id UUID NOT NULL,
+    meal_id UUID NOT NULL,
+    date DATE NOT NULL,
+    time VARCHAR(10) NOT NULL,
+    amount DOUBLE NOT NULL,
+    PRIMARY KEY (user_id, meal_id, date, time),
+    FOREIGN KEY (user_id) references users(id),
+    FOREIGN KEY (meal_id) references meals(id),
+);
 

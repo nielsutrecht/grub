@@ -9,6 +9,9 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
+import java.util.List;
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class RepositoryTest<T> {
@@ -41,6 +44,14 @@ public abstract class RepositoryTest<T> {
 
     protected void assertRows(int amount) {
         assertThat(JdbcTestUtils.countRowsInTable(template, table)).isEqualTo(amount);
+    }
+
+    protected List<Map<String, Object>> allRows() {
+        return template.queryForList("SELECT * FROM " + table);
+    }
+
+    protected Map<String, Object> singleRow() {
+        return allRows().remove(0);
     }
 
     protected void assertEmpty() {

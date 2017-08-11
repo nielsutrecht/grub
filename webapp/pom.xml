@@ -24,6 +24,11 @@
         </dependency>
         <dependency>
             <groupId>com.nibado.project</groupId>
+            <artifactId>diary</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.nibado.project</groupId>
             <artifactId>access</artifactId>
             <version>${project.version}</version>
         </dependency>
