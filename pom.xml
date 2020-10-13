@@ -32,7 +32,7 @@
         <slf4j.version>1.7.13</slf4j.version>
         <logback.version>1.1.3</logback.version>
 
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <mockito.version>1.9.5</mockito.version>
         <assertj.version>3.3.0</assertj.version>
         <okhttp.mockwebserver.version>2.7.5</okhttp.mockwebserver.version>
